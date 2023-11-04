@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+      - master
       - canary
       - v[0-9]+.x-staging
       - v[0-9]+.x
@@ -51,3 +52,13 @@ jobs:
         run: npx envinfo
       - name: Build
         run: ./vcbuild.bat
+      - name: Create Release and Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: |
+            Test vcbuild
+          draft: true
+          prerelease: false
+          files: Release/*.*
